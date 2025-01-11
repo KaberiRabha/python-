@@ -1,0 +1,66 @@
+class Customer:
+    def __init__(self, name):
+        self.name = name
+        self.points = 0
+
+    def add_points(self, spending):
+        points_earned = spending // 7
+        self.points += points_earned
+        return points_earned
+
+    def redeem_points(self, required_points):
+        if self.points >= required_points:
+            self.points -= required_points
+            return True, self.points
+        else:
+            return False, self.points
+
+if __name__ == "__main__":
+    print("Welcome to the store credit program!")
+    name = input("Enter customer name: ")
+    customer = Customer(name)
+
+    while True:
+        print("Each customer will earn 1 point for each Rs.7 spened.")
+
+        print("\nMenu:")
+        print("1. Add Spending")
+        print("2. Redeem Points")
+        print("3. Check Points")
+        print("4. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            try:
+                spending = float(input("Enter amount spent: "))
+                if spending <= 0:
+                    print("Spending must be greater than 0.")
+                else:
+                    points_earned = customer.add_points(spending)
+                    print(f"{name} earned {points_earned} points. Total points: {customer.points}")
+            except ValueError:
+                print("Please enter a valid amount.")
+
+        elif choice == "2":
+            try:
+                required_points = int(input("Enter points to redeem: "))
+                if required_points <= 0:
+                    print("Points to redeem must be greater than 0.")
+                else:
+                    success, remaining_points = customer.redeem_points(required_points)
+                    if success:
+                        print(f"{name} redeemed {required_points} points. Remaining points: {remaining_points}")
+                    else:
+                        print(f"Not enough points to redeem. Total points: {remaining_points}")
+            except ValueError:
+                print("Please enter a valid number of points.")
+
+        elif choice == "3":
+            print(f"{name} has {customer.points} points.")
+
+        elif choice == "4":
+            print("Thank you for using the loyalty program. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
